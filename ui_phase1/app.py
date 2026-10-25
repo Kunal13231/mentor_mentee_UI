@@ -3,7 +3,6 @@ from flask import Flask, jsonify, redirect, render_template, request
 from jinja2 import TemplateNotFound
 from frontend.src.db import get_connection,init_db
 
-
 ROLES = ("student", "mentor", "staff", "hod", "admin")
 LOW_ATTENDANCE_THRESHOLD = 75
 
