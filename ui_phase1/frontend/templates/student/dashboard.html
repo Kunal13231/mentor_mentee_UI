@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+{% block content %}
+<div class="grid grid-2">
+  <section class="card" aria-labelledby="att-title">
+    <h2 class="card-title" id="att-title">Attendance</h2>
+    <div class="hero">
+      <div class="ring" id="attendance-ring" role="img" aria-label="Overall attendance"><div id="metric-overall">—</div></div>
+      <p class="muted" id="attendance-note">Loading your attendance…</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="label">Present</div><div class="value" id="metric-present">—</div></div>
+      <div class="stat"><div class="label">Absent</div><div class="value" id="metric-absent">—</div></div>
+    </div>
+  </section>
+  <section class="card"><h2 class="card-title">Subject-wise attendance</h2><canvas id="subject-chart" height="150" role="img" aria-label="Subject-wise attendance chart"></canvas></section>
+  <section class="card"><h2 class="card-title">Pending tasks</h2><div class="list" id="pending-tasks"></div></section>
+  <section class="card"><h2 class="card-title">Recent notifications</h2><div class="list" id="recent-notifications"></div></section>
+</div>
+{% endblock %}
+{% block scripts %}<script type="module" src="{{ url_for('static', filename='js/pages/student-dashboard.js') }}"></script>{% endblock %}

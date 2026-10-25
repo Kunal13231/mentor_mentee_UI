@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock %} · Mentor Mentee System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="main">
+    <header class="page-head">
+      <button class="btn btn-tonal btn-icon menu-btn" id="sidebar-toggle" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+      <div class="titles">
+        <div class="eyebrow" id="today"></div>
+        <h1>{% block heading %}{% endblock %}</h1>
+      </div>
+    </header>
+    <main>{% block content %}{% endblock %}</main>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.3/chart.umd.min.js"></script>
+<script type="module">
+  import { guardPage, renderSidebar } from "{{ url_for('static', filename='js/components/navigation.js') }}";
+  guardPage("{{ role }}");
+  renderSidebar("{{ role }}");
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

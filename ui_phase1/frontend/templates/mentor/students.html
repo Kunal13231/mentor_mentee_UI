@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}My Students{% endblock %}
+{% block heading %}My Students{% endblock %}
+{% block content %}<div class="card card-flush" id="students-table"></div>{% endblock %}
+{% block scripts %}<script type="module" src="{{ url_for('static', filename='js/pages/mentor-students.js') }}"></script>{% endblock %}

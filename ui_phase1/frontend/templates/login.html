@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · Mentor Mentee System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
+</head>
+<body>
+<main class="auth-page">
+  <div>
+    <form class="card auth-card" id="login-form" novalidate>
+      <div class="brand"><span class="brand-mark" aria-hidden="true">MM</span>
+      <h1><span>Mentor Mentee &amp;<br>Student Management</span></h1>
+    </div>
+      <h2>Welcome back</h2>
+      <p class="muted" style="margin:4px 0 24px">Sign in with your college account.</p>
+      <div class="alert" id="login-error" role="alert" hidden></div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input class="input" type="email" id="email" name="email" autocomplete="username" required>
+        <div class="field-error">Enter a valid email address.</div>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <input class="input" type="password" id="password" name="password" autocomplete="current-password" required>
+          <button type="button" id="toggle-password" aria-label="Show password"><i class="fa-regular fa-eye"></i></button>
+        </div>
+        <div class="field-error">Password is required.</div>
+      </div>
+      <div class="auth-row">
+        <label class="check"><input type="checkbox" id="remember" name="remember"> Remember me</label>
+        <a href="/forgot-password">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn btn-block">Sign in</button>
+    </form>
+    <p class="auth-foot">Authorised users only. Activity is logged.</p>
+  </div>
+</main>
+<script type="module" src="{{ url_for('static', filename='js/pages/login.js') }}"></script>
+</body>
+</html>
