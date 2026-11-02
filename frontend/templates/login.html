@@ -1,68 +1,62 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Sign in · Mentor Mentee System</title>
-  <script>document.documentElement.dataset.theme = localStorage.getItem("ms.theme") || "light";</script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-  <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
-   <!-- Website Favicon -->
-<link
-    rel="icon"
-    type="image/x-icon"
-    href="{{ url_for('static', filename='web_favicon.ico') }}"
->
-</head>
-<body>
-<main class="auth-page">
-  <button class="btn btn-outline-secondary btn-icon theme-fab" id="theme-toggle" type="button"></button>
-  <div class="auth-card panel">
-   <div class="brand">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Sign in · Mentor Mentee System</title>
+    <script>
+      document.documentElement.dataset.theme = localStorage.getItem('ms.theme') || 'light'
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet" />
+    <!-- Website Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='web_favicon.ico') }}" />
+  </head>
+  <body>
+    <main class="auth-page">
+      <button class="btn btn-outline-secondary btn-icon theme-fab" id="theme-toggle" type="button"></button>
+      <div class="auth-card panel">
+        <div class="brand">
+          <img src="{{ url_for('static', filename='web_favicon.png') }}" alt="Mentor Mentee Logo" class="brand-logo" />
 
-    <img
-        src="{{ url_for('static', filename='web_favicon.png') }}"
-        alt="Mentor Mentee Logo"
-        class="brand-logo"
-    >
-
-    <span>Mentor Mentee</span>
-
-</div>
-    <form id="login-form" novalidate>
-      <h1 class="auth-title">Sign in</h1>
-      <p class="text-muted mb-3">Use your college account to continue.</p>
-      <div class="alert alert-danger d-none" id="login-error" role="alert"></div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" name="email" autocomplete="username" required>
-        <div class="invalid-feedback">Enter a valid email address.</div>
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <div class="input-group has-validation">
-          <input type="password" class="form-control" id="password" name="password" autocomplete="current-password" required>
-          <button class="btn btn-outline-secondary" type="button" id="toggle-password" aria-label="Show password"><i class="fa-regular fa-eye"></i></button>
-          <div class="invalid-feedback">Password is required.</div>
+          <span>Mentor Mentee</span>
         </div>
+        <form id="login-form" novalidate>
+          <h1 class="auth-title">Sign in</h1>
+          <p class="text-muted mb-3">Use your college account to continue.</p>
+          <div class="alert alert-danger d-none" id="login-error" role="alert"></div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" autocomplete="username" required />
+            <div class="invalid-feedback">Enter a valid email address.</div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group has-validation">
+              <input type="password" class="form-control" id="password" name="password" autocomplete="current-password" required />
+              <button class="btn btn-outline-secondary" type="button" id="toggle-password" aria-label="Show password"><i class="fa-regular fa-eye"></i></button>
+              <div class="invalid-feedback">Password is required.</div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="remember" name="remember" /><label class="form-check-label" for="remember">Remember me</label>
+            </div>
+            <a href="/forgot-password" class="small">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Sign in</button>
+        </form>
       </div>
-      <div class="d-flex justify-content-between mb-3">
-        <div class="form-check"><input class="form-check-input" type="checkbox" id="remember" name="remember"><label class="form-check-label" for="remember">Remember me</label></div>
-        <a href="/forgot-password" class="small">Forgot password?</a>
-      </div>
-      <button type="submit" class="btn btn-primary w-100">Sign in</button>
-    </form>
-  </div>
-  <p class="auth-foot position-absolute bottom-0 mb-3">Authorised users only. Activity is logged.</p>
-</main>
-<script type="module" src="{{ url_for('static', filename='js/pages/login.js') }}"></script>
-<script type="module">
-  import { initThemeToggle } from "{{ url_for('static', filename='js/components/theme.js') }}";
-  initThemeToggle(document.getElementById("theme-toggle"));
-</script>
-</body>
+      <p class="auth-foot position-absolute bottom-0 mb-3">Authorised users only. Activity is logged.</p>
+    </main>
+    <script type="module" src="{{ url_for('static', filename='js/pages/login.js') }}"></script>
+    <script type="module">
+      import { initThemeToggle } from "{{ url_for('static', filename='js/components/theme.js') }}"
+      initThemeToggle(document.getElementById('theme-toggle'))
+    </script>
+  </body>
 </html>
