@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{% block title %}{% endblock %} · Mentor Mentee System</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem("ms.theme") || "light";</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div>
+    <header class="topbar">
+      <button class="btn btn-sm btn-outline-secondary btn-icon d-lg-none" id="sidebar-toggle" aria-label="Toggle navigation"><i class="fa-solid fa-bars"></i></button>
+      <div class="titles">
+        <div class="eyebrow" id="role-label">{{ role|title }}</div>
+        <h1>{% block heading %}{% endblock %}</h1>
+      </div>
+      <button class="btn btn-outline-secondary btn-icon" id="theme-toggle" type="button"></button>
+      <button class="btn btn-sm btn-outline-secondary" id="logout"><i class="fa-solid fa-arrow-right-from-bracket me-1" aria-hidden="true"></i>Sign out</button>
+    </header>
+    <main class="content">{% block content %}{% endblock %}</main>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.3/chart.umd.min.js"></script>
+<script type="module">
+  import { guardPage, renderSidebar } from "{{ url_for('static', filename='js/components/navigation.js') }}";
+  import { initThemeToggle } from "{{ url_for('static', filename='js/components/theme.js') }}";
+  guardPage("{{ role }}");
+  renderSidebar("{{ role }}");
+  initThemeToggle(document.getElementById("theme-toggle"));
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

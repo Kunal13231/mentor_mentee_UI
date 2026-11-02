@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Student Dashboard
+{% endblock %}
+
+{% block heading %}
+  Dashboard
+{% endblock %}
+
+{% block content %}
+  <section class="panel metric-strip mb-3" aria-label="Attendance summary">
+    {% for metric in metrics %}
+      {% set id = metric.id %}
+      {% set label = metric.label %}
+      {% set icon = metric.icon %}
+
+      <div class="metric">
+        <div class="label">
+          <i class="fa-solid {{ icon }}" aria-hidden="true"></i>
+          {{ label }}
+        </div>
+
+        <div class="value" id="metric-{{ id }}">—</div>
+      </div>
+    {% endfor %}
+  </section>
+
+  <div class="row g-3">
+    <!-- Subject-wise Attendance -->
+    <div class="col-lg-7">
+      <div class="panel">
+        <div class="panel-head">Subject-wise Attendance</div>
+
+        <div class="panel-body">
+          <canvas id="subject-chart" height="140" aria-label="Subject-wise attendance chart" role="img"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Tasks -->
+    <div class="col-lg-5">
+      <div class="panel">
+        <div class="panel-head">Pending Tasks</div>
+
+        <div class="list-group list-group-flush" id="pending-tasks"></div>
+      </div>
+    </div>
+
+    <!-- Recent Notifications -->
+    <div class="col-12">
+      <div class="panel">
+        <div class="panel-head">Recent Notifications</div>
+
+        <div class="list-group list-group-flush" id="recent-notifications"></div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="module" src="{{ url_for('static', filename='js/pages/student-dashboard.js') }}"></script>
+{% endblock %}
