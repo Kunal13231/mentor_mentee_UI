@@ -1,63 +1,348 @@
-{% extends 'base.html' %}
 
-{% block title %}
-  Student Dashboard
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
 
-{% block heading %}
-  Dashboard
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block content %}
-  <section class="panel metric-strip mb-3" aria-label="Attendance summary">
-    {% for metric in metrics %}
-      {% set id = metric.id %}
-      {% set label = metric.label %}
-      {% set icon = metric.icon %}
+    <title>Student Dashboard | Mentor Mentee System</title>
 
-      <div class="metric">
-        <div class="label">
-          <i class="fa-solid {{ icon }}" aria-hidden="true"></i>
-          {{ label }}
+    <!-- Theme initialization -->
+    <script>
+        document.documentElement.dataset.theme =
+            localStorage.getItem("ms.theme") || "light";
+    </script>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+    <!-- Student Dashboard CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/student-dashboard.css') }}">
+</head>
+
+<body>
+
+    <div class="app-shell">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+
+            <div class="brand">
+                <img
+                    src="{{ url_for('static', filename='web_favicon.png') }}"
+                    alt="Mentor Mentee Logo"
+                    class="brand-logo"
+                >
+
+                <div class="brand-name">
+                    Mentor Mentee
+                    <span>Management System</span>
+                </div>
+            </div>
+
+            <div class="nav-label">STUDENT MENU</div>
+
+            <nav class="sidebar-nav" aria-label="Student navigation">
+
+                <a href="/student/dashboard" class="nav-link active" aria-current="page">
+                    <span class="nav-icon"><i class="fa-solid fa-gauge"></i></span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="/student/attendance" class="nav-link">
+                    <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
+                    <span>My Attendance</span>
+                </a>
+
+                <a href="/student/instructions" class="nav-link">
+                    <span class="nav-icon"><i class="fa-solid fa-bullhorn"></i></span>
+                    <span>Instructions</span>
+                </a>
+
+                <a href="/student/tasks" class="nav-link">
+                    <span class="nav-icon"><i class="fa-solid fa-list-check"></i></span>
+                    <span>Tasks</span>
+                </a>
+
+                <a href="/student/notifications" class="nav-link">
+                    <span class="nav-icon"><i class="fa-solid fa-bell"></i></span>
+                    <span>Notifications</span>
+                </a>
+
+                <a href="/student/profile" class="nav-link">
+                    <span class="nav-icon"><i class="fa-solid fa-user"></i></span>
+                    <span>Profile</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-footer-icon">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+
+                <div>
+                    <strong>Student Portal</strong>
+                    <span>Academic Workspace</span>
+                </div>
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN AREA -->
+        <div class="main-area">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+
+                <button
+                    class="icon-button mobile-menu"
+                    id="sidebar-toggle"
+                    type="button"
+                    aria-label="Toggle sidebar"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="page-heading">
+                    <span class="eyebrow">STUDENT PORTAL</span>
+                    <h1>Dashboard</h1>
+                </div>
+
+                <div class="topbar-actions">
+
+                    <button
+                        class="icon-button"
+                        id="theme-toggle"
+                        type="button"
+                        aria-label="Toggle theme"
+                        title="Toggle theme"
+                    >
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+
+                    <button
+                        class="logout-button"
+                        id="logout"
+                        type="button"
+                    >
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- DASHBOARD CONTENT -->
+            <main class="content">
+
+                <!-- WELCOME -->
+                <section class="welcome-section">
+
+                    <div>
+                        <span class="welcome-tag">YOUR ACADEMIC OVERVIEW</span>
+
+                        <h2>Welcome Back, Student!</h2>
+
+                        <p>
+                            Track your attendance, manage tasks and stay updated
+                            with your academic activities.
+                        </p>
+                    </div>
+
+                    <div class="welcome-icon">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+
+                </section>
+
+
+                <!-- ATTENDANCE SUMMARY -->
+                <section class="panel metric-strip">
+
+                    <div class="metric">
+
+                        <div class="metric-top">
+                            <span class="metric-label">Overall Attendance</span>
+
+                            <span class="metric-icon blue">
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </span>
+                        </div>
+
+                        <div class="metric-value" id="metric-overall">—</div>
+
+                        <div class="metric-caption">
+                            Total attendance percentage
+                        </div>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <div class="metric-top">
+                            <span class="metric-label">Sessions Present</span>
+
+                            <span class="metric-icon green">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </span>
+                        </div>
+
+                        <div class="metric-value" id="metric-present">—</div>
+
+                        <div class="metric-caption">
+                            Total sessions attended
+                        </div>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <div class="metric-top">
+                            <span class="metric-label">Sessions Absent</span>
+
+                            <span class="metric-icon red">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                            </span>
+                        </div>
+
+                        <div class="metric-value" id="metric-absent">—</div>
+
+                        <div class="metric-caption">
+                            Total sessions missed
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- CHART AND TASKS -->
+                <div class="dashboard-grid">
+
+                    <!-- SUBJECT ATTENDANCE -->
+                    <section class="panel chart-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <h3>Subject-wise Attendance</h3>
+                                <p>Attendance performance by subject</p>
+                            </div>
+
+                            <span class="panel-heading-icon">
+                                <i class="fa-solid fa-chart-column"></i>
+                            </span>
+
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas
+                                id="subject-chart"
+                                role="img"
+                                aria-label="Subject-wise attendance chart"
+                            ></canvas>
+                        </div>
+
+                    </section>
+
+
+                    <!-- PENDING TASKS -->
+                    <section class="panel tasks-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <h3>Pending Tasks</h3>
+                                <p>Your upcoming academic work</p>
+                            </div>
+
+                            <span class="panel-heading-icon purple">
+                                <i class="fa-solid fa-list-check"></i>
+                            </span>
+
+                        </div>
+
+                        <div
+                            class="list-group list-group-flush dashboard-list"
+                            id="pending-tasks"
+                        >
+                            <div class="state-box">
+                                <div class="loading-spinner"></div>
+                                <span>Loading tasks...</span>
+                            </div>
+                        </div>
+
+                    </section>
+
+
+                    <!-- NOTIFICATIONS -->
+                    <section class="panel notifications-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <h3>Recent Notifications</h3>
+                                <p>Latest updates and announcements</p>
+                            </div>
+
+                            <span class="panel-heading-icon orange">
+                                <i class="fa-solid fa-bell"></i>
+                            </span>
+
+                        </div>
+
+                        <div
+                            class="list-group list-group-flush dashboard-list"
+                            id="recent-notifications"
+                        >
+                            <div class="state-box">
+                                <div class="loading-spinner"></div>
+                                <span>Loading notifications...</span>
+                            </div>
+                        </div>
+
+                    </section>
+
+                </div>
+
+                <!-- FOOTER -->
+                <footer class="dashboard-footer">
+                    <span>© 2026 Mentor Mentee Management System</span>
+                    <span>Student Dashboard</span>
+                </footer>
+
+            </main>
+
         </div>
 
-        <div class="value" id="metric-{{ id }}">—</div>
-      </div>
-    {% endfor %}
-  </section>
-
-  <div class="row g-3">
-    <!-- Subject-wise Attendance -->
-    <div class="col-lg-7">
-      <div class="panel">
-        <div class="panel-head">Subject-wise Attendance</div>
-
-        <div class="panel-body">
-          <canvas id="subject-chart" height="140" aria-label="Subject-wise attendance chart" role="img"></canvas>
-        </div>
-      </div>
     </div>
 
-    <!-- Pending Tasks -->
-    <div class="col-lg-5">
-      <div class="panel">
-        <div class="panel-head">Pending Tasks</div>
 
-        <div class="list-group list-group-flush" id="pending-tasks"></div>
-      </div>
-    </div>
+    <!-- Student Dashboard JavaScript -->
+    <script type="module"
+            src="{{ url_for('static', filename='js/pages/student-dashboard.js') }}">
+    </script>
 
-    <!-- Recent Notifications -->
-    <div class="col-12">
-      <div class="panel">
-        <div class="panel-head">Recent Notifications</div>
-
-        <div class="list-group list-group-flush" id="recent-notifications"></div>
-      </div>
-    </div>
-  </div>
-{% endblock %}
-
-{% block scripts %}
-  <script type="module" src="{{ url_for('static', filename='js/pages/student-dashboard.js') }}"></script>
-{% endblock %}
+</body>
+</html>

@@ -1,4 +1,5 @@
 import { session } from "../core/api.js";
+import { renderSidebar, guardPage } from "../components/navigation.js";
 
 const NAV = {
   student: [
@@ -32,6 +33,15 @@ const NAV = {
 export function guardPage(requiredRole) {
   if (!session.token) return window.location.replace("/login");
   if (session.role !== requiredRole) window.location.replace(`/${session.role}/dashboard`);
+}
+
+async function init() {
+    guardPage("student");
+    renderSidebar("student");
+
+    setupControls();
+
+    // बाकीचा तुझा existing code इथेच ठेवा
 }
 
 export function renderSidebar(role) {

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Attendance | Mentor Mentee System</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem("ms.theme") || "light";</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/student-dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/attendance.css') }}">
+</head>
+<body>
+<div class="app-shell">
+   <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+
+            <div class="brand">
+                <img
+                    src="{{ url_for('static', filename='web_favicon.png') }}"
+                    alt="Mentor Mentee Logo"
+                    class="brand-logo"
+                >
+
+                <div class="brand-name">
+                    Mentor Mentee
+                    <span>Management System</span>
+                </div>
+            </div>
+
+            <div class="nav-label">STUDENT MENU</div>
+
+            <nav class="sidebar-nav" aria-label="Student navigation">
+
+                <a href="/student/dashboard" class="nav-link active" aria-current="page">
+                    <span class="nav-icon"><i class="fa-solid fa-gauge"></i></span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="/student/attendance" class="nav-link">
+                    <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
+                    <span>My Attendance</span>
+                </a>
+
+                <a href="/student/instructions" class="nav-link">
+                    <span class="nav-icon"><i class="fa-solid fa-bullhorn"></i></span>
+                    <span>Instructions</span>
+                </a>
+
+                <a href="/student/tasks" class="nav-link">
+                    <span class="nav-icon"><i class="fa-solid fa-list-check"></i></span>
+                    <span>Tasks</span>
+                </a>
+
+                <a href="/student/notifications" class="nav-link">
+                    <span class="nav-icon"><i class="fa-solid fa-bell"></i></span>
+                    <span>Notifications</span>
+                </a>
+
+                <a href="/student/profile" class="nav-link">
+                    <span class="nav-icon"><i class="fa-solid fa-user"></i></span>
+                    <span>Profile</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-footer-icon">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+
+                <div>
+                    <strong>Student Portal</strong>
+                    <span>Academic Workspace</span>
+                </div>
+            </div>
+
+        </aside>
+
+
+  <div class="main-area">
+    <header class="topbar">
+      <button class="icon-button mobile-menu" id="sidebar-toggle" type="button" aria-label="Toggle sidebar"><i class="fa-solid fa-bars"></i></button>
+      <div class="page-heading"><span class="eyebrow">STUDENT PORTAL</span><h1>My Attendance</h1></div>
+      <div class="topbar-actions">
+        <button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+        <button class="logout-button" id="logout" type="button"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
+      </div>
+    </header>
+
+    <main class="content attendance-content">
+      <section class="attendance-hero">
+        <div><span class="welcome-tag">YOUR ATTENDANCE RECORD</span><h2>Stay on track. Stay consistent.</h2><p>Monitor your attendance, review subject performance and keep track of your class records.</p></div>
+        <div class="attendance-hero-icon"><i class="fa-solid fa-calendar-check"></i></div>
+      </section>
+
+      <div class="attendance-notice" id="demo-notice"><i class="fa-solid fa-circle-info"></i><span>Showing sample attendance data from the development API. Replace it with recorded attendance when your database integration is ready.</span></div>
+
+      <section class="attendance-stats">
+        <article class="attendance-stat"><div class="stat-top"><span>Overall Attendance</span><i class="fa-solid fa-chart-pie stat-blue"></i></div><strong id="att-overall">—</strong><small>Attendance percentage</small><div class="stat-progress"><span id="att-progress"></span></div></article>
+        <article class="attendance-stat"><div class="stat-top"><span>Present Sessions</span><i class="fa-solid fa-circle-check stat-green"></i></div><strong id="att-present">—</strong><small>Classes attended</small></article>
+        <article class="attendance-stat"><div class="stat-top"><span>Absent Sessions</span><i class="fa-solid fa-circle-xmark stat-red"></i></div><strong id="att-absent">—</strong><small>Classes missed</small></article>
+        <article class="attendance-stat"><div class="stat-top"><span>Required Attendance</span><i class="fa-solid fa-bullseye stat-purple"></i></div><strong id="att-threshold">75%</strong><small>Minimum target</small></article>
+      </section>
+
+      <div class="attendance-layout">
+        <section class="attendance-panel calendar-panel">
+          <div class="attendance-panel-heading"><div><h3>Monthly Attendance</h3><p>Daily present and absent overview</p></div><div class="month-controls"><button id="prev-month" type="button" aria-label="Previous month"><i class="fa-solid fa-chevron-left"></i></button><strong id="calendar-month">—</strong><button id="next-month" type="button" aria-label="Next month"><i class="fa-solid fa-chevron-right"></i></button></div></div>
+          <div class="calendar-legend"><span><i class="legend-dot present-dot"></i>Present</span><span><i class="legend-dot absent-dot"></i>Absent</span><span><i class="legend-dot no-record-dot"></i>No record</span></div>
+          <div class="attendance-calendar" id="attendance-calendar" aria-live="polite"></div>
+          <div class="calendar-selection" id="calendar-selection">Select a date to view its attendance details.</div>
+        </section>
+        <section class="attendance-panel subject-panel">
+          <div class="attendance-panel-heading"><div><h3>Subject-wise Attendance</h3><p>Attendance percentage by subject</p></div><span class="attendance-heading-icon"><i class="fa-solid fa-chart-column"></i></span></div>
+          <div class="attendance-chart-wrap"><canvas id="attendance-subject-chart" aria-label="Subject-wise attendance chart"></canvas></div>
+          <div id="subject-list" class="subject-list"></div>
+        </section>
+      </div>
+
+      <section class="attendance-panel history-panel">
+        <div class="attendance-panel-heading history-heading"><div><h3>Attendance History</h3><p>Recent class-wise attendance records</p></div><div class="history-filter"><i class="fa-solid fa-filter"></i><select id="history-filter" aria-label="Filter attendance"><option value="all">All records</option><option value="present">Present</option><option value="absent">Absent</option></select></div></div>
+        <div class="table-responsive"><table class="attendance-table"><thead><tr><th>Date</th><th>Subject</th><th>Session</th><th>Status</th></tr></thead><tbody id="attendance-history"><tr><td colspan="4" class="table-state">Loading attendance history...</td></tr></tbody></table></div>
+        <div class="history-footnote" id="history-count"></div>
+      </section>
+      <footer class="dashboard-footer"><span>© 2026 Mentor Mentee Management System</span><span>Student Attendance</span></footer>
+    </main>
+  </div>
+</div>
+<script type="module" src="{{ url_for('static', filename='js/pages/attendance.js') }}"></script>
+  <!-- Student Dashboard JavaScript -->
+    <script type="module"
+            src="{{ url_for('static', filename='js/components/theme.js') }}">
+    </script>
+</body>
+</html>

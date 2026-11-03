@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, redirect, render_template, request
 from jinja2 import TemplateNotFound
+from datetime import date, timedelta
 
 ROLES = ("student", "mentor", "staff", "hod", "admin")
 LOW_ATTENDANCE_THRESHOLD = 75
@@ -7,6 +8,7 @@ LOW_ATTENDANCE_THRESHOLD = 75
 # Pages that exist as real templates: (role, page) -> template
 BUILT_PAGES = {
     ("student", "dashboard"): "student/dashboard.html",
+    ("student", "attendance"): "student/attendance.html",
     ("mentor", "students"): "mentor/students.html",
 }
 

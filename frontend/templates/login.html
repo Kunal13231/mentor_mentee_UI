@@ -54,9 +54,6 @@
       <p class="auth-foot position-absolute bottom-0 mb-3">Authorised users only. Activity is logged.</p>
     </main>
     <script type="module" src="{{ url_for('static', filename='js/pages/login.js') }}"></script>
-    <script type="module">
-      import { initThemeToggle } from "{{ url_for('static', filename='js/components/theme.js') }}"
-      initThemeToggle(document.getElementById('theme-toggle'))
-    </script>
+    <script type="module" src="{{ url_for('static', filename='js/components/theme.js') }}"></script>
   </body>
 </html>

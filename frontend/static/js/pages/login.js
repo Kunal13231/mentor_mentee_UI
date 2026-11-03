@@ -1,6 +1,9 @@
 import { api, session } from "../core/api.js";
 import { endpoints } from "../core/endpoints.js";
 import { setBusy } from "../core/ui.js";
+import { initThemeToggle } from "../components/theme.js";
+
+initThemeToggle(document.getElementById("theme-toggle"));
 
 const form = document.getElementById("login-form");
 const alertBox = document.getElementById("login-error");
